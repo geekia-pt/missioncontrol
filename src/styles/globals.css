@@ -1,0 +1,241 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+/* ═══════════════════════════════════════════════
+   OPENCLAW MISSION CONTROL — Design System
+   Industrial Command × Luxury Dark Interface
+   ═══════════════════════════════════════════════ */
+
+:root {
+  /* ── Core Palette ── */
+  --bg-void: #08090c;
+  --bg-primary: #0d0f14;
+  --bg-secondary: #12151c;
+  --bg-tertiary: #181c25;
+  --bg-elevated: #1e2330;
+  --bg-hover: #252a38;
+
+  /* ── Surface ── */
+  --surface-card: #141720;
+  --surface-card-hover: #1a1e2a;
+  --surface-input: #111419;
+  --surface-overlay: rgba(8, 9, 12, 0.85);
+
+  /* ── Borders ── */
+  --border-subtle: rgba(255, 255, 255, 0.04);
+  --border-default: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --border-accent: rgba(0, 212, 255, 0.2);
+
+  /* ── Text ── */
+  --text-primary: #e8ecf4;
+  --text-secondary: #8b92a5;
+  --text-tertiary: #565e73;
+  --text-disabled: #3a3f4e;
+
+  /* ── Accent: Cyan Command ── */
+  --accent-cyan: #00d4ff;
+  --accent-cyan-dim: rgba(0, 212, 255, 0.15);
+  --accent-cyan-glow: rgba(0, 212, 255, 0.3);
+
+  /* ── Accent: Amber Alert ── */
+  --accent-amber: #ffb627;
+  --accent-amber-dim: rgba(255, 182, 39, 0.12);
+  --accent-amber-glow: rgba(255, 182, 39, 0.25);
+
+  /* ── Status Colors ── */
+  --status-online: #22e87a;
+  --status-online-dim: rgba(34, 232, 122, 0.12);
+  --status-busy: #ff6b35;
+  --status-busy-dim: rgba(255, 107, 53, 0.12);
+  --status-error: #ff3b5c;
+  --status-error-dim: rgba(255, 59, 92, 0.12);
+  --status-idle: #8b92a5;
+  --status-idle-dim: rgba(139, 146, 165, 0.08);
+
+  /* ── Semantic ── */
+  --marketing-color: #a78bfa;
+  --marketing-dim: rgba(167, 139, 250, 0.12);
+  --comercial-color: #34d399;
+  --comercial-dim: rgba(52, 211, 153, 0.12);
+
+  /* ── Typography ── */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* ── Spacing ── */
+  --sidebar-width: 260px;
+  --topbar-height: 60px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+  /* ── Shadows ── */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-glow-cyan: 0 0 20px rgba(0, 212, 255, 0.15);
+  --shadow-glow-amber: 0 0 20px rgba(255, 182, 39, 0.15);
+}
+
+/* ═══════════════════════════════════
+   LIGHT THEME
+   ═══════════════════════════════════ */
+[data-theme="light"] {
+  --bg-void: #f0f2f5;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f7f8fa;
+  --bg-tertiary: #eef0f4;
+  --bg-elevated: #ffffff;
+  --bg-hover: #e8eaf0;
+
+  --surface-card: #ffffff;
+  --surface-card-hover: #f5f6f8;
+  --surface-input: #f2f3f7;
+  --surface-overlay: rgba(255, 255, 255, 0.9);
+
+  --border-subtle: rgba(0, 0, 0, 0.05);
+  --border-default: rgba(0, 0, 0, 0.1);
+  --border-strong: rgba(0, 0, 0, 0.15);
+  --border-accent: rgba(0, 150, 200, 0.25);
+
+  --text-primary: #1a1d26;
+  --text-secondary: #5a6178;
+  --text-tertiary: #8b92a5;
+  --text-disabled: #c0c5d0;
+
+  --accent-cyan: #0096c8;
+  --accent-cyan-dim: rgba(0, 150, 200, 0.1);
+  --accent-cyan-glow: rgba(0, 150, 200, 0.2);
+
+  --accent-amber: #d4940f;
+  --accent-amber-dim: rgba(212, 148, 15, 0.1);
+  --accent-amber-glow: rgba(212, 148, 15, 0.15);
+
+  --status-online: #16a85a;
+  --status-online-dim: rgba(22, 168, 90, 0.1);
+  --status-busy: #e05a20;
+  --status-busy-dim: rgba(224, 90, 32, 0.1);
+  --status-error: #dc2f4a;
+  --status-error-dim: rgba(220, 47, 74, 0.1);
+  --status-idle: #8b92a5;
+  --status-idle-dim: rgba(139, 146, 165, 0.06);
+
+  --marketing-color: #7c5cbf;
+  --marketing-dim: rgba(124, 92, 191, 0.1);
+  --comercial-color: #1a9e6f;
+  --comercial-dim: rgba(26, 158, 111, 0.1);
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --shadow-glow-cyan: 0 0 20px rgba(0, 150, 200, 0.12);
+  --shadow-glow-amber: 0 0 20px rgba(212, 148, 15, 0.12);
+}
+
+[data-theme="light"] .noise-overlay { opacity: 0.008; }
+[data-theme="light"] .scanlines::after { opacity: 0; }
+
+/* ── Reset & Base ── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-void);
+  color: var(--text-primary);
+  overflow: hidden;
+  height: 100vh;
+}
+
+#root {
+  height: 100vh;
+  display: flex;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+/* ── Utility ── */
+.mono { font-family: var(--font-mono); }
+.display { font-family: var(--font-display); }
+
+/* ── Noise Overlay ── */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.015;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* ── Scanline Effect ── */
+.scanlines::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+}
+
+/* ── Animations ── */
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.4s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}

@@ -1,46 +1,128 @@
-# Getting Started with Create React App
+# OPENCLAW Mission Control v2
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> AI Agent Orchestration Dashboard for business operations — Marketing, Commercial, Financial, and beyond.
 
-## Available Scripts
+Built by [Audaces Capital](https://audacescapital.com) as the command center for an AI-powered workforce running on the [OpenClaw](https://openclaw.ai) platform.
 
-In the project directory, you can run:
+## Overview
 
-### `npm start`
+Mission Control is a full-stack dashboard that manages 12+ AI agents across multiple business departments. Think of it as an "operating system" for your AI workforce — monitoring tasks, tracking deliverables, managing client workspaces, and coordinating agent activities in real-time.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Key Features
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- **14 operational pages** — Dashboard, 3D Office, Marketing, CRM, Operational, Hub, Clients, Agents, Financial, Integrations, Memory, Budgets, Market Studies, Settings
+- **12 AI Agents** — Aurora, Maven, Pulse, Vega, Nexus, Echo, Sentinel, Onyx, Orion, Atlas, Iris, Ledger
+- **7-State Task Machine** — Inbox → Assigned → In Progress → Testing → Review → Done → Archived
+- **Activity Audit Trail** — Every action logged with severity, category, agent attribution, and metadata
+- **Deliverables Tracking** — Files, URLs, and artifacts tied to tasks with approval workflows
+- **Multi-tenant Client Workspaces** — Manage multiple client businesses from one dashboard
+- **Dark/Light/System Theme** — Full design system with CSS custom properties
+- **Demo Mode** — Read-only mode with privacy controls for presentations
+- **SSE-Ready Architecture** — Hooks prepared for real-time Server-Sent Events from OpenClaw Gateway
+- **SuperMemory Integration** — Persistent context and token economy tracking
 
-### `npm test`
+## Tech Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Layer | Technology |
+|-------|-----------|
+| Framework | React 19 + TypeScript |
+| Routing | React Router v7 |
+| Animation | Framer Motion |
+| Icons | Lucide React |
+| State | React Context (AppContext + ThemeContext) |
+| Styling | CSS Custom Properties + Inline Styles |
+| Build | Create React App (Webpack) |
 
-### `npm run build`
+## Project Structure
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+src/
+├── components/
+│   ├── layout/
+│   │   ├── Sidebar.tsx          # Navigation with agent status
+│   │   └── Topbar.tsx           # Search, theme toggle, status chips
+│   └── DemoBanner.tsx           # Demo mode overlay
+├── contexts/
+│   ├── ThemeContext.tsx          # Dark/Light/System theme
+│   └── AppContext.tsx            # Demo mode, privacy, notifications
+├── hooks/
+│   └── useSSE.ts                # SSE hook (mock + production ready)
+├── data/
+│   ├── mockData.ts              # Core data: agents, tasks, leads, activities
+│   └── mockDataExpanded.ts      # Extended: clients, financial, budgets, memory
+├── pages/
+│   ├── Dashboard.tsx            # KPIs, activity feed, kanban, alerts
+│   ├── Office.tsx               # 3D office grid with agent desks
+│   ├── Marketing.tsx            # Projects kanban, campaigns, email sequences
+│   ├── CRM.tsx                  # Lead pipeline, interactions, proposals
+│   ├── Operational.tsx          # Project tracking with milestones
+│   ├── Orcamentos.tsx           # Construction budgets with categories
+│   ├── EstudosMercado.tsx       # Market studies and analysis
+│   ├── Hub.tsx                  # Task input/output command center
+│   ├── Clients.tsx              # Multi-tenant workspace management
+│   ├── Agents.tsx               # Agent grid with detailed profiles
+│   ├── Financial.tsx            # Revenue, token costs, platform costs
+│   ├── Integrations.tsx         # 24 integration cards
+│   ├── Memory.tsx               # SuperMemory entries and stats
+│   └── Settings.tsx             # Integration config, office layout, users
+└── styles/
+    └── globals.css              # Full design system (dark + light themes)
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Agents
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+| Agent | Role | Department | Model |
+|-------|------|-----------|-------|
+| Aurora | Executive Assistant | Direction | claude-sonnet-4 |
+| Maven | Market Analyst | Marketing | claude-opus-4 |
+| Pulse | Campaign Manager | Marketing | claude-sonnet-4 |
+| Vega | Sales Closer | Commercial | claude-sonnet-4 |
+| Nexus | SDR / Qualification | Commercial | claude-haiku-4 |
+| Echo | Email Sequencer | Marketing | claude-haiku-4 |
+| Sentinel | Project Monitor | Marketing | claude-sonnet-4 |
+| Onyx | WhatsApp Support | Commercial | claude-haiku-4 |
+| Orion | Budget Manager | Marketing | — |
+| Atlas | Website Agent | Marketing | — |
+| Iris | Social Media Manager | Marketing | — |
+| Ledger | Financial Controller | Direction | — |
 
-### `npm run eject`
+## Getting Started
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```bash
+# Install dependencies
+npm install
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# Start development server
+npm start
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+# Build for production
+npm run build
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+The app runs on `http://localhost:3000` (or next available port).
 
-## Learn More
+## Architecture Decisions
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**Why inline styles?** — All styling uses `Record<string, React.CSSProperties>` for type-safe, component-scoped styles with no CSS-in-JS runtime overhead.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**Why SSE over WebSocket?** — Server-Sent Events are simpler for unidirectional server-to-client updates, work through proxies, and auto-reconnect. The `useSSE` hook supports both real and mock modes.
+
+**Why 7-state tasks?** — Inspired by [crshdn/mission-control](https://github.com/crshdn/mission-control), the 7-state machine provides clear lifecycle tracking with automated testing gates and rework loops.
+
+## Roadmap
+
+- [ ] Connect to OpenClaw Gateway via WebSocket
+- [ ] Supabase backend for persistent data
+- [ ] Real SSE streaming from agent activities
+- [ ] Auto-dispatch task assignment
+- [ ] Playwright-based deliverable testing
+- [ ] LLM routing by task complexity
+- [ ] Advanced cron scheduling primitives
+
+## License
+
+MIT
+
+---
+
+Built with AI. Managed by humans. Powered by [OpenClaw](https://openclaw.ai).
