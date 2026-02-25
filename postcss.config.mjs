@@ -1,7 +1,7 @@
+// Tailwind v4 removed: has a known bug with '#' in project paths.
+// CSS utilities are inlined in globals.css instead.
 const config = {
-  plugins: {
-    "@tailwindcss/postcss": {},
-  },
+  plugins: {},
 };
 
 export default config;
