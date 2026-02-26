@@ -166,6 +166,22 @@ const Hub: React.FC = () => {
         </div>
       </motion.div>
 
+      {/* ── Activity Pulse ── */}
+      <motion.div style={styles.activityPulse} {...stagger(0.5)}>
+        {[
+          { emoji: '🧠', text: 'Maestro processou instrução de routing', time: '2m', color: 'var(--accent-cyan)' },
+          { emoji: '📣', text: 'Marketer concluiu post Instagram para Doce Pão', time: '18m', color: 'var(--marketing-color)' },
+          { emoji: '💼', text: 'Comercial atualizou pipeline Techfield Porto', time: '1h', color: 'var(--accent-amber)' },
+          { emoji: '⚙️', text: 'Ops marcou milestone "Dashboard + Escritório" como concluída', time: '3h', color: 'var(--status-online)' },
+        ].map((ev, i) => (
+          <div key={i} style={styles.pulseItem}>
+            <div style={{ ...styles.pulseEmoji, background: `${ev.color}15` }}>{ev.emoji}</div>
+            <span style={styles.pulseText}>{ev.text}</span>
+            <span style={styles.pulseTime}>{ev.time}</span>
+          </div>
+        ))}
+      </motion.div>
+
       {/* ── Main 2-Column Layout ── */}
       <div style={styles.mainGrid}>
 
@@ -179,15 +195,24 @@ const Hub: React.FC = () => {
               </h3>
             </div>
 
+            {/* Quick Actions */}
+            <div style={styles.quickActions}>
+              {['Criar proposta', 'Resumir reunião', 'Atualizar CRM', 'Elaborar campanha', 'Analisar dados'].map(q => (
+                <button key={q} style={styles.quickChip} onClick={() => setInstruction(q + ': ')}>
+                  <Zap size={9} />{q}
+                </button>
+              ))}
+            </div>
+
             {/* Instruction textarea */}
             <div style={styles.formGroup}>
               <label style={styles.formLabel}>INSTRUCAO</label>
               <textarea
                 value={instruction}
                 onChange={(e) => setInstruction(e.target.value)}
-                placeholder="Descreve o que precisas que o agente faca..."
+                placeholder="Descreve o que precisas que o agente faça... ou usa uma ação rápida acima"
                 style={styles.textarea}
-                rows={4}
+                rows={3}
               />
             </div>
 
@@ -617,6 +642,75 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     gap: '8px',
+  },
+
+  // ── Activity Pulse ──
+  activityPulse: {
+    display: 'flex',
+    gap: '4px',
+    padding: '10px 14px',
+    background: 'var(--surface-card)',
+    borderRadius: 'var(--radius-md)',
+    border: '1px solid var(--border-subtle)',
+    flexWrap: 'nowrap' as const,
+    overflow: 'hidden',
+  },
+  pulseItem: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '7px',
+    padding: '4px 10px',
+    borderRadius: 'var(--radius-sm)',
+    background: 'var(--bg-secondary)',
+    flex: 1,
+    minWidth: 0,
+  },
+  pulseEmoji: {
+    width: 24,
+    height: 24,
+    borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '12px',
+    flexShrink: 0,
+  },
+  pulseText: {
+    fontSize: '11px',
+    color: 'var(--text-secondary)',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap' as const,
+    flex: 1,
+  },
+  pulseTime: {
+    fontSize: '9px',
+    fontFamily: 'var(--font-mono)',
+    color: 'var(--text-tertiary)',
+    flexShrink: 0,
+  },
+
+  // ── Quick Actions ──
+  quickActions: {
+    display: 'flex',
+    gap: '6px',
+    flexWrap: 'wrap' as const,
+    marginBottom: '12px',
+  },
+  quickChip: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
+    padding: '4px 10px',
+    borderRadius: '20px',
+    border: '1px solid var(--border-default)',
+    background: 'var(--bg-secondary)',
+    color: 'var(--text-secondary)',
+    fontSize: '10px',
+    fontFamily: 'var(--font-mono)',
+    fontWeight: 600,
+    cursor: 'pointer',
+    transition: 'all 0.15s',
   },
 
   // ── Form Styles ──
