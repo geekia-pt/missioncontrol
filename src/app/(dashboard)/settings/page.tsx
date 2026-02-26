@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Plug, FolderOpen, Users, FileBarChart2,
@@ -85,6 +85,12 @@ const typeColors: Record<string, string> = {
 
 const Settings: React.FC = () => {
   const [activeSection, setActiveSection] = useState<Section>('integracoes');
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get('tab') as Section;
+    if (tab && sections.find(s => s.id === tab)) setActiveSection(tab);
+  }, []);
   const [projectFilter, setProjectFilter] = useState<'all' | 'em_andamento' | 'concluido' | 'pausado'>('all');
   const [projectSearch, setProjectSearch] = useState('');
 
