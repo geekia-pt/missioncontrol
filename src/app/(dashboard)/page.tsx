@@ -12,25 +12,44 @@ import {
   Clock,
   ArrowUpRight,
   CircleDot,
+  Wifi,
+  WifiOff,
+  Cpu,
+  HardDrive,
+  Activity,
 } from 'lucide-react';
 import {
   tasks, activities, alerts, schedules, leads, campaigns, agents,
   getAgentName, getAgentAvatar, getActivityIcon, getDepartmentColor, getPriorityColor,
 } from '@/data/mockData';
+import { useGatewayHealth, useVitals, useCapacity, useSessions } from '@/hooks/useGateway';
+import { useAgents } from '@/hooks/useAgents';
 
 const stagger = (i: number) => ({ initial: { opacity: 0, y: 16 }, animate: { opacity: 1, y: 0 }, transition: { delay: i * 0.06, duration: 0.4 } });
 
 const Dashboard: React.FC = () => {
+  const { gatewayUp } = useGatewayHealth();
+  const { vitals } = useVitals();
+  const { capacity } = useCapacity();
+  const { sessions, statusCounts } = useSessions();
+  const { agents: liveAgents } = useAgents();
+
+  // Use live agent count if available, otherwise mock
+  const totalAgents = liveAgents.length > 0 ? liveAgents.length : agents.length;
+  const onlineAgents = liveAgents.length > 0
+    ? liveAgents.filter(a => a.status === 'online' || a.status === 'busy').length
+    : agents.filter(a => a.status === 'online' || a.status === 'busy').length;
+
   const activeProjects = 4;
   const activeLeads = leads.filter(l => l.stage !== 'fechado').length;
   const runningCampaigns = campaigns.filter(c => c.status === 'running').length;
-  const onlineAgents = agents.filter(a => a.status === 'online' || a.status === 'busy').length;
+  const liveSessions = statusCounts.live || 0;
 
   const kpis = [
     { label: 'Projetos ativos', sublabel: 'Marketing & Gestão', value: activeProjects, icon: TrendingUp, color: 'var(--marketing-color)', bg: 'var(--marketing-dim)' },
     { label: 'Leads ativos', sublabel: 'Comercial', value: activeLeads, icon: Users, color: 'var(--comercial-color)', bg: 'var(--comercial-dim)' },
     { label: 'Campanhas ativas', sublabel: 'Em execução', value: runningCampaigns, icon: Megaphone, color: 'var(--accent-amber)', bg: 'var(--accent-amber-dim)' },
-    { label: 'Agentes online', sublabel: `${onlineAgents} de ${agents.length}`, value: `${onlineAgents}/${agents.length}`, icon: Bot, color: 'var(--accent-cyan)', bg: 'var(--accent-cyan-dim)' },
+    { label: 'Agentes online', sublabel: `${onlineAgents} de ${totalAgents}`, value: `${onlineAgents}/${totalAgents}`, icon: Bot, color: 'var(--accent-cyan)', bg: 'var(--accent-cyan-dim)' },
   ];
 
   const todoTasks = tasks.filter(t => t.status === 'todo');
@@ -39,8 +58,48 @@ const Dashboard: React.FC = () => {
 
   return (
     <div style={styles.page}>
+      {/* ── Gateway Status Bar ── */}
+      <motion.div style={styles.gatewayBar} {...stagger(0)}>
+        <div style={styles.gatewayLeft}>
+          {gatewayUp ? (
+            <Wifi size={12} color="var(--status-online)" />
+          ) : (
+            <WifiOff size={12} color="var(--text-tertiary)" />
+          )}
+          <span style={{
+            ...styles.gatewayStatus,
+            color: gatewayUp ? 'var(--status-online)' : 'var(--text-tertiary)',
+          }}>
+            Gateway {gatewayUp ? 'ONLINE' : 'OFFLINE'}
+          </span>
+          {gatewayUp && liveSessions > 0 && (
+            <span style={styles.gatewayPill}>
+              <Activity size={9} /> {liveSessions} sessão{liveSessions > 1 ? 'ões' : ''} ativa{liveSessions > 1 ? 's' : ''}
+            </span>
+          )}
+          {gatewayUp && capacity && (
+            <span style={styles.gatewayPill}>
+              <Bot size={9} /> {capacity.main.active}/{capacity.main.max} slots
+            </span>
+          )}
+        </div>
+        {gatewayUp && vitals && (
+          <div style={styles.gatewayRight}>
+            <span style={styles.vitalChip}>
+              <Cpu size={9} /> CPU {vitals.cpu.usage}%
+            </span>
+            <span style={styles.vitalChip}>
+              <HardDrive size={9} /> RAM {vitals.memory.percent}%
+            </span>
+            {vitals.cpu.chip && (
+              <span style={styles.vitalChipMuted}>{vitals.cpu.chip}</span>
+            )}
+          </div>
+        )}
+      </motion.div>
+
       {/* ── Header ── */}
-      <motion.div style={styles.header} {...stagger(0)}>
+      <motion.div style={styles.header} {...stagger(0.5)}>
         <div>
           <h2 style={styles.pageTitle}>Mission Control</h2>
           <p style={styles.pageSubtitle}>Overview de Marketing, Comercial e agentes</p>
@@ -79,12 +138,18 @@ const Dashboard: React.FC = () => {
           <div style={styles.cardHeader}>
             <h3 style={styles.cardTitle}>Atividades recentes</h3>
             <div style={styles.liveIndicator}>
-              <div style={styles.liveDot} />
-              <span style={styles.liveText}>LIVE</span>
+              <div style={{
+                ...styles.liveDot,
+                background: gatewayUp ? 'var(--status-online)' : 'var(--status-error)',
+              }} />
+              <span style={{
+                ...styles.liveText,
+                color: gatewayUp ? 'var(--status-online)' : 'var(--status-error)',
+              }}>{gatewayUp ? 'LIVE' : 'MOCK'}</span>
             </div>
           </div>
           <div style={styles.activityList}>
-            {activities.map((activity, i) => (
+            {activities.map((activity) => (
               <div key={activity.id} style={styles.activityItem}>
                 <div style={styles.activityIcon}>{getActivityIcon(activity.type)}</div>
                 <div style={styles.activityContent}>
@@ -188,7 +253,7 @@ const Dashboard: React.FC = () => {
                 <span style={{
                   ...styles.deptBadge,
                   color: getDepartmentColor(s.department),
-                  background: s.department === 'marketing' ? 'var(--marketing-dim)' : 'var(--comercial-dim)',
+                  background: s.department === 'marketing' ? 'var(--marketing-dim)' : s.department === 'comercial' ? 'var(--comercial-dim)' : 'var(--accent-cyan-dim)',
                 }}>
                   {s.department}
                 </span>
@@ -209,7 +274,7 @@ const KanbanCard: React.FC<{ task: typeof tasks[0] }> = ({ task }) => (
       <span style={{
         ...styles.deptBadge,
         color: getDepartmentColor(task.department),
-        background: task.department === 'marketing' ? 'var(--marketing-dim)' : 'var(--comercial-dim)',
+        background: task.department === 'marketing' ? 'var(--marketing-dim)' : task.department === 'comercial' ? 'var(--comercial-dim)' : 'var(--accent-cyan-dim)',
         fontSize: '9px',
       }}>
         {task.department}
@@ -232,6 +297,62 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     gap: '20px',
   },
+  // ── Gateway Status Bar ──
+  gatewayBar: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '8px 14px',
+    borderRadius: 'var(--radius-md)',
+    background: 'var(--bg-secondary)',
+    border: '1px solid var(--border-subtle)',
+  },
+  gatewayLeft: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+  },
+  gatewayStatus: {
+    fontSize: '10px',
+    fontFamily: 'var(--font-mono)',
+    fontWeight: 700,
+    letterSpacing: '0.5px',
+  },
+  gatewayPill: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
+    fontSize: '10px',
+    fontFamily: 'var(--font-mono)',
+    color: 'var(--text-secondary)',
+    padding: '2px 8px',
+    borderRadius: '12px',
+    background: 'var(--bg-primary)',
+    border: '1px solid var(--border-subtle)',
+  },
+  gatewayRight: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+  },
+  vitalChip: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
+    fontSize: '10px',
+    fontFamily: 'var(--font-mono)',
+    color: 'var(--text-secondary)',
+    padding: '2px 8px',
+    borderRadius: '12px',
+    background: 'var(--bg-primary)',
+    border: '1px solid var(--border-subtle)',
+  },
+  vitalChipMuted: {
+    fontSize: '9px',
+    fontFamily: 'var(--font-mono)',
+    color: 'var(--text-tertiary)',
+  },
+  // ── Header ──
   header: {
     display: 'flex',
     justifyContent: 'space-between',
