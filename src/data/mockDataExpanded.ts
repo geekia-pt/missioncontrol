@@ -3,7 +3,7 @@
 // Clientes, Financeiro, Orçamentos, Memory, Hub
 // ═══════════════════════════════════════════════
 
-import { Agent } from './mockData';
+
 
 // ── Client Workspaces (Multi-tenant) ──
 export interface ClientWorkspace {
@@ -369,42 +369,6 @@ export const integrations: Integration[] = [
   { id: 'int-23', name: 'Zapier / Make', description: 'Automações custom entre plataformas', category: 'produtividade', icon: '🔗', connected: true, configurable: true },
   // Financeiro
   { id: 'int-24', name: 'Wise / Revolut', description: 'Pagamentos multi-moeda', category: 'financeiro', icon: '💶', connected: false, configurable: true },
-];
-
-// ── New Agents for expanded areas ──
-export const expandedAgents: Partial<Agent>[] = [
-  {
-    id: 'ag-009', name: 'Orion', role: 'Gestor de Orçamentos',
-    department: 'marketing' as const, status: 'online' as const, avatar: '📐',
-    skills: ['Estimativas', 'Tabelas de Preço', 'Templates de Orçamento', 'PDF Generation'],
-    currentTask: 'Atualizando preços base materiais',
-    desk: { x: 2, y: 2 },
-    soul: 'Meticuloso com números, erra para o lado conservador. Domina custos de construção.',
-  },
-  {
-    id: 'ag-010', name: 'Atlas', role: 'Agente de Sites (Aura Build)',
-    department: 'marketing' as const, status: 'online' as const, avatar: '🌐',
-    skills: ['Aura Build', 'Cloudflare DNS', 'Hostinger Domains', 'SEO', 'Google Search Console'],
-    currentTask: 'Publicando site Doce Pão',
-    desk: { x: 4, y: 2 },
-    soul: 'Focado em performance e SEO. Cria sites limpos e rápidos.',
-  },
-  {
-    id: 'ag-011', name: 'Iris', role: 'Social Media Manager',
-    department: 'marketing' as const, status: 'busy' as const, avatar: '🎨',
-    skills: ['Instagram', 'Facebook', 'LinkedIn', 'Content Calendar', 'Analytics'],
-    currentTask: 'Gerando relatório métricas Instagram',
-    desk: { x: 4, y: 3 },
-    soul: 'Criativa, entende trends, faz copy que converte. Voz adaptável a cada marca.',
-  },
-  {
-    id: 'ag-012', name: 'Ledger', role: 'Controller Financeiro',
-    department: 'direção' as const, status: 'online' as const, avatar: '💰',
-    skills: ['Stripe API', 'Invoicing', 'Token Tracking', 'Cost Analysis', 'Billing'],
-    currentTask: 'Calculando custos de tokens do mês',
-    desk: { x: 2, y: 3 },
-    soul: 'Conservador, transparente. Cada euro é rastreado e justificado.',
-  },
 ];
 
 // ── Onboarding Steps ──

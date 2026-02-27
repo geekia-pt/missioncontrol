@@ -18,6 +18,8 @@ const ROOMS = [
   { id: 'direção', label: 'Direção' },
   { id: 'marketing', label: 'Marketing' },
   { id: 'comercial', label: 'Comercial' },
+  { id: 'financeiro', label: 'Financeiro' },
+  { id: 'operacional', label: 'Operacional' },
 ];
 
 // Office layout grid — 4x5 grid representing desks
